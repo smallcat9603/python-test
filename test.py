@@ -764,26 +764,36 @@ Created on 2015/07/27
 #     if each not in b:
 #         print each
 
-a = []
-a.append(1)
-a.append(2)
-a.append(3)
-a.append(4)
-print a
-a.pop()
-print a
+# a = []
+# a.append(1)
+# a.append(2)
+# a.append(3)
+# a.append(4)
+# print a
+# a.pop()
+# print a
 
-b = {}
-b[0] = []
-print b
-b[0].append(1)
-b[0].append(2)
-b[0].append(3)
-print b
-b[0].remove(2)
-print b
-b[0].append(2)
-print b
+# b = {}
+# b[0] = []
+# print b
+# b[0].append(1)
+# b[0].append(2)
+# b[0].append(3)
+# print b
+# b[0].remove(2)
+# print b
+# b[0].append(2)
+# print b
 
-for i in range(0):
-    print i
+# for i in range(0):
+#     print i
+
+a = 100
+b = 200
+res = []
+with open("/Users/smallcat/Documents/GitHub/python-test/HPL.dat", "r") as f:
+    res = f.readlines()
+res[5]=str(a) + "\t\t\t Ns\n"
+res[26]=str(b) + "\t\t\t swapping threshold\n"
+with open("/Users/smallcat/Documents/GitHub/python-test/HPL.dat", "w") as f:    
+    f.write("".join(res))  
