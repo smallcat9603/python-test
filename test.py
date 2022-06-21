@@ -788,12 +788,27 @@ Created on 2015/07/27
 # for i in range(0):
 #     print i
 
-a = 100
-b = 200
-res = []
-with open("/Users/smallcat/Documents/GitHub/python-test/HPL.dat", "r") as f:
-    res = f.readlines()
-res[5]=str(a) + "\t\t\t Ns\n"
-res[26]=str(b) + "\t\t\t swapping threshold\n"
-with open("/Users/smallcat/Documents/GitHub/python-test/HPL.dat", "w") as f:    
-    f.write("".join(res))  
+# a = 100
+# b = 200
+# res = []
+# with open("/Users/smallcat/Documents/GitHub/python-test/HPL.dat", "r") as f:
+#     res = f.readlines()
+# res[5]=str(a) + "\t\t\t Ns\n"
+# res[26]=str(b) + "\t\t\t swapping threshold\n"
+# with open("/Users/smallcat/Documents/GitHub/python-test/HPL.dat", "w") as f:    
+#     f.write("".join(res))  
+
+#(nx, ny, nz, ppn, OMP_NUM_TRREADS), ppn = {1, 2, 4, 5}, ppn * OMP_NUM_THREADS = 20
+# zero = (192, 192, 192, 1, 20)
+# step = 32
+# ppn = [1, 2, 4, 5]
+# comb = []
+# for p in ppn:
+#     for nx in range(192, 1152, step):
+#         for ny in range(192, 1152, step):
+#             for nz in range(192, 1152, step):
+#                 if (nx * ny * nz * p)//(192 * 192 * 192 * 1) <= 5:
+#                     comb.append((nx, ny, nz, p, 20//p))
+# print(comb)
+a = '(1, 2, 3, 4, 5)'
+print(eval(a)[0])
