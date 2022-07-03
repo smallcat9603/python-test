@@ -825,3 +825,28 @@ Created on 2015/07/27
 # a = '0.0'
 # print(float(a)==0.001)
 
+HOSTS = ['calc09', 'calc10', 'calc11', 'calc12', 'calc13', 'calc14', 'calc15', 'calc16']
+num_hosts = len(HOSTS)
+num_procs = 8
+HOST_SLOTS = []
+
+def gen(m, n, p=[]):
+    if n==0:
+        if m==0:
+            yield p
+        else:
+            return
+    else:
+        for i in range(m+1):
+            yield from gen(m-i, n-1, p+[i])
+
+for p in gen(num_procs, num_hosts):
+    slots = [ str(i) for i in p]
+    host_slots = zip(HOSTS, slots)
+    host_slots_new = []
+    for host_slot in host_slots:
+        if host_slot[1] != '0':
+            host_slots_new.append(':'.join(host_slot))
+    HOST_SLOTS.append(','.join(host_slots_new))
+
+print(HOST_SLOTS)
