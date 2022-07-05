@@ -825,7 +825,7 @@ Created on 2015/07/27
 # a = '0.0'
 # print(float(a)==0.001)
 
-HOSTS = ['calc09', 'calc10', 'calc11', 'calc12', 'calc13', 'calc14', 'calc15', 'calc16']
+HOSTS = ['calc09', 'calc10', 'calc11', 'calc12']
 num_hosts = len(HOSTS)
 num_procs = 8
 HOST_SLOTS = []
@@ -849,4 +849,14 @@ for p in gen(num_procs, num_hosts):
             host_slots_new.append(':'.join(host_slot))
     HOST_SLOTS.append(','.join(host_slots_new))
 
-print(HOST_SLOTS)
+# print(HOST_SLOTS)
+
+ppn = 1
+host_slots = ""
+for host in HOSTS:
+    host_slots += host + ":" + str(ppn) + ","
+host_slots = host_slots[:-1]
+hosts = ",".join(HOSTS)
+
+print(host_slots)
+print(hosts)
