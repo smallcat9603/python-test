@@ -893,7 +893,6 @@ while p.returncode is None:
         print(output)
         if '3' in str(line):
             target = 3
-        # break
     p.poll()
 # print(os.getpid())
 # print(p.pid)
