@@ -825,38 +825,86 @@ Created on 2015/07/27
 # a = '0.0'
 # print(float(a)==0.001)
 
-HOSTS = ['calc09', 'calc10', 'calc11', 'calc12']
-num_hosts = len(HOSTS)
-num_procs = 8
-HOST_SLOTS = []
+# HOSTS = ['calc09', 'calc10', 'calc11', 'calc12']
+# num_hosts = len(HOSTS)
+# num_procs = 8
+# HOST_SLOTS = []
 
-def gen(m, n, p=[]):
-    if n==0:
-        if m==0:
-            yield p
-        else:
-            return
-    else:
-        for i in range(m+1):
-            yield from gen(m-i, n-1, p+[i])
+# def gen(m, n, p=[]):
+#     if n==0:
+#         if m==0:
+#             yield p
+#         else:
+#             return
+#     else:
+#         for i in range(m+1):
+#             yield from gen(m-i, n-1, p+[i])
 
-for p in gen(num_procs, num_hosts):
-    slots = [ str(i) for i in p]
-    host_slots = zip(HOSTS, slots)
-    host_slots_new = []
-    for host_slot in host_slots:
-        if host_slot[1] != '0':
-            host_slots_new.append(':'.join(host_slot))
-    HOST_SLOTS.append(','.join(host_slots_new))
+# for p in gen(num_procs, num_hosts):
+#     slots = [ str(i) for i in p]
+#     host_slots = zip(HOSTS, slots)
+#     host_slots_new = []
+#     for host_slot in host_slots:
+#         if host_slot[1] != '0':
+#             host_slots_new.append(':'.join(host_slot))
+#     HOST_SLOTS.append(','.join(host_slots_new))
 
-# print(HOST_SLOTS)
+# # print(HOST_SLOTS)
 
-ppn = 1
-host_slots = ""
-for host in HOSTS:
-    host_slots += host + ":" + str(ppn) + ","
-host_slots = host_slots[:-1]
-hosts = ",".join(HOSTS)
+# ppn = 1
+# host_slots = ""
+# for host in HOSTS:
+#     host_slots += host + ":" + str(ppn) + ","
+# host_slots = host_slots[:-1]
+# hosts = ",".join(HOSTS)
 
-print(host_slots)
-print(hosts)
+# print(host_slots)
+# print(hosts)
+
+import subprocess
+from multiprocessing.pool import ThreadPool
+import os
+import signal
+import time
+cmd = "/Users/smallcat/opt/anaconda3/bin/python /Users/smallcat/Documents/GitHub/python-test/timeloop.py"
+# cmd = 'echo Start;sleep 0.5;echo 1;sleep 0.5;echo 2;sleep 0.5;echo 3;sleep 0.5;echo Finished'
+p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+# output = p.stdout.read().decode()
+print(os.getpid())
+print(p.pid)
+print(os.getpgid(0))
+print(os.getpgid(p.pid))
+print(p.returncode)
+# the_io_thread_pool = ThreadPool(2)
+# the_io_thread_pool.map(int, list(range(2)))
+# stdout_result = the_io_thread_pool.apply_async(p.stdout.read)
+time0 = time.time()
+output = ''
+target = 0
+while p.returncode is None:
+    line = p.stdout.readline().decode()
+    # line = line.strip()
+    if line:
+        print('Subprogram output: ' + line)
+        output += line
+    if time.time() > time0 + 5:
+        os.kill(p.pid, signal.SIGKILL)
+        p.wait()
+        print(output)
+        if '3' in str(line):
+            target = 3
+        # break
+    p.poll()
+# print(os.getpid())
+# print(p.pid)
+# print(os.getpgid(0))
+# print(os.getpgid(p.pid))
+# print(p.returncode)
+if p.returncode == 0:
+    print('Subprogram success')
+else:
+    print('Subprogram failed: returncode {}'.format(p.returncode))
+print(target)
+# print(p.returncode)
+# print(out.decode())
+# print(stdout_result.get())
