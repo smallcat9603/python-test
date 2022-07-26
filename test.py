@@ -875,35 +875,41 @@ print(p.pid)
 print(os.getpgid(0))
 print(os.getpgid(p.pid))
 print(p.returncode)
-# the_io_thread_pool = ThreadPool(2)
+the_io_thread_pool = ThreadPool(2)
 # the_io_thread_pool.map(int, list(range(2)))
-# stdout_result = the_io_thread_pool.apply_async(p.stdout.read)
+stdout_result = the_io_thread_pool.apply_async(p.stdout.read)
 time0 = time.time()
 output = ''
 target = 0
 while p.returncode is None:
-    line = p.stdout.readline().decode()
-    # line = line.strip()
-    if line:
-        print('Subprogram output: ' + line)
-        output += line
+    # p.wait()
+    # print(stdout_result.get().decode())
     if time.time() > time0 + 5:
         os.kill(p.pid, signal.SIGKILL)
         p.wait()
-        print(output)
-        if '3' in str(line):
-            target = 3
+        print(stdout_result.get().decode())
+        target = int(stdout_result.get().decode().strip().split('\n')[-1])
     p.poll()
-# print(os.getpid())
-# print(p.pid)
-# print(os.getpgid(0))
-# print(os.getpgid(p.pid))
-# print(p.returncode)
 if p.returncode == 0:
     print('Subprogram success')
 else:
     print('Subprogram failed: returncode {}'.format(p.returncode))
 print(target)
-# print(p.returncode)
-# print(out.decode())
-# print(stdout_result.get())
+
+# a = '1 34\n2 45 5 \n3 5  6  \n\n'
+# print(a.strip())
+# print('end')
+
+# a = '''
+# - The matrix A is randomly generated for each test.
+# - The following scaled residual check will be computed:
+#       ||Ax-b||_oo / ( eps * ( || x ||_oo * || A ||_oo + || b ||_oo ) * N )
+# - The relative machine precision (eps) is taken to be               1.110223e-16
+# - Computational tests pass if scaled residuals are less than                16.0
+
+# Column=000000384 Fraction= 0.4% Gflops=1.549e+03
+# Column=000000768 Fraction= 0.8% Gflops=8.063e+02
+# Column=000001152 Fraction= 1.2% Gflops=5.916e+02
+# '''
+# b = a.split('Gflops=')[-1].split()[0]
+# print(b)
